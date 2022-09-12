@@ -2,6 +2,7 @@ const {
   validDescriptionChecker,
   validTitleChecker,
   validRatingChecker,
+  validActorChecker,
 } = require("./checkers");
 
 function generateMovieObject(reqBody) {
@@ -28,7 +29,7 @@ function generateModifiedMovieObject(reqBody, ori) {
     newObj.description = ori.description;
   }
   if (reqBody.actor) {
-    validactorChecker(reqBody);
+    validActorChecker(reqBody);
     newObj.actor = reqBody.actor;
   } else {
     newObj.actor = ori.actor;

@@ -41,22 +41,21 @@ app.listen(3000, () => {
 });
 
 app.all("/", (req, res, next) => {
-  res.json("hello here is my response");
+  res.json({ status: 200, message: "Hello welcome to Movie World" });
 });
 
 app.get("/movies", (req, res, next) => {
-  res.json(movies);
+  res.json({ status: 200, movies });
 });
 
 app.post("/movies", (req, res, next) => {
-  console.log(req.body);
   validTitleChecker(req.body, res);
   validRatingChecker(req.body, res);
   validDescriptionChecker(req.body, res);
 
   movies[idCounter] = generateMovieObject(req.body);
   idCounter++;
-  return res.send(req.body.title + " has been added");
+  return res.json({ status: 201, message: req.body.title + " has been added" });
 });
 
 app.put("/movies", (req, res, next) => {
@@ -64,24 +63,38 @@ app.put("/movies", (req, res, next) => {
   for (movie in movies) {
     if (movies[movie].title === req.body.title) {
       movies[movie] = generateModifiedMovieObject(req.body, movies[movie]);
-      return res.send(req.body.title + " has been modified ");
+      return res.json({
+        status: 200,
+        message: req.body.title + " has been modified",
+        movie: movies[movie],
+      });
     }
   }
   validRatingChecker(req.body);
   validDescriptionChecker(req.body);
   movies[idCounter] = generateMovieObject(req.body);
   idCounter++;
-  return res.send(req.body.title + " has been added ");
+  return res.json({
+    status: 201,
+    message: req.body.title + " has been added",
+  });
 });
 
 app.delete("/movies", (req, res, next) => {
-  let responseString = "";
+  if (!req.query.id)
+    return res.json({ status: 400, message: "Please specify movie ID" });
+
   if (movies[req.query.id]) {
     let target = movies[req.query.id].title;
     delete movies[req.query.id];
-    responseString = target + " has been deleted";
+    return res.json({ status: 200, message: target + " has been deleted" });
   } else {
     responseString = "Movie with this ID does not exist";
+    return res.json({
+      status: 404,
+      message: "Movie with the ID: " + req.query.id + " does not exist",
+    });
   }
-  return res.send(responseString);
 });
+
+module.exports = app;
