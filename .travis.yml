@@ -7,13 +7,13 @@ script:
 deploy:
   provider: elasticbeanstalk
   access_key_id:
-    secure: "Encrypted <access-key-id>=AKIAVWXQX7LQ6KT5IHFY"
+    secure: "AKIAVWXQX7LQ6KT5IHFY"
   secret_access_key:
-    secure: "Encypted <secret-access-key>=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"
+    secure: "PXpFd4KVJ48Z6LzGSU8xqMOeqNxBdRfd3nuVCP6f"
   on:
     repo: euzintan/3219-movie-api
     branch: main # ← new!
   region: "ap-southeast-1"
   app: "cs3219-movie-api"
   env: "cs3219-movie-api-dev"
-  bucket: http://s3.amazonaws.com/[3219-movie-api]/
+  bucket_name: 3219-movie-api
