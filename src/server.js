@@ -49,17 +49,22 @@ app.get("/movies", (req, res, next) => {
 });
 
 app.post("/movies", (req, res, next) => {
-  validTitleChecker(req.body, res);
-  validRatingChecker(req.body, res);
-  validDescriptionChecker(req.body, res);
-
-  movies[idCounter] = generateMovieObject(req.body);
-  idCounter++;
-  return res.json({ status: 201, message: req.body.title + " has been added" });
+  if (
+    validTitleChecker(req.body, res) &&
+    validRatingChecker(req.body, res) &&
+    validDescriptionChecker(req.body, res)
+  ) {
+    movies[idCounter] = generateMovieObject(req.body);
+    idCounter++;
+    return res.json({
+      status: 201,
+      message: req.body.title + " has been added",
+    });
+  }
 });
 
 app.put("/movies", (req, res, next) => {
-  validTitleChecker(req.body);
+  if (!validTitleChecker(req.body)) return;
   for (movie in movies) {
     if (movies[movie].title === req.body.title) {
       movies[movie] = generateModifiedMovieObject(req.body, movies[movie]);
@@ -70,14 +75,14 @@ app.put("/movies", (req, res, next) => {
       });
     }
   }
-  validRatingChecker(req.body);
-  validDescriptionChecker(req.body);
-  movies[idCounter] = generateMovieObject(req.body);
-  idCounter++;
-  return res.json({
-    status: 201,
-    message: req.body.title + " has been added",
-  });
+  if (validRatingChecker(req.body) && validDescriptionChecker(req.body)) {
+    movies[idCounter] = generateMovieObject(req.body);
+    idCounter++;
+    return res.json({
+      status: 201,
+      message: req.body.title + " has been added",
+    });
+  }
 });
 
 app.delete("/movies", (req, res, next) => {

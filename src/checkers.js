@@ -1,7 +1,9 @@
 function validTitleChecker(reqBody, res) {
   if (!reqBody.title) {
-    return res.json({ status: 400, message: "Please provide a title" });
+    res.json({ status: 400, message: "Please provide a title" });
+    return false;
   }
+  return true;
 }
 
 function validRatingChecker(reqBody, res) {
@@ -11,23 +13,29 @@ function validRatingChecker(reqBody, res) {
     reqBody.rating < 0 ||
     reqBody.rating > 5
   ) {
-    return res.json({
+    res.json({
       status: 400,
       message: "Please provide a rating between 0 and 5",
     });
+    return false;
   }
+  return true;
 }
 
 function validDescriptionChecker(reqBody, res) {
   if (!reqBody.description) {
-    return res.json({ status: 400, message: "Please provide a description" });
+    res.json({ status: 400, message: "Please provide a description" });
+    return false;
   }
+  return true;
 }
 
 function validActorChecker(reqBody, res) {
   if (!reqBody.actor) {
-    return res.json({ status: 400, message: "Please provide an actor" });
+    res.json({ status: 400, message: "Please provide an actor" });
+    return false;
   }
+  return true;
 }
 
 module.exports = {
