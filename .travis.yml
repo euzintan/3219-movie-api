@@ -16,4 +16,3 @@ deploy:
   region: "ap-southeast-1"
   app: "cs3219-movie-api"
   env: "cs3219-movie-api-dev"
-  bucket_name: "s3://cs3219-movie-api-bucket"
