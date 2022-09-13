@@ -10,6 +10,11 @@ deploy:
     secure: "Encrypted <access-key-id>=AKIAVWXQX7LQ6KT5IHFY"
   secret_access_key:
     secure: "Encypted <secret-access-key>=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"
+  on:
+    repo: 3219-movie-api
+    branches:    # ← new!
+      only:      # ← new!
+        - master # ← new!
   region: "ap-southeast-1"
   app: "cs3219-movie-api"
   env: "cs3219-movie-api-dev"
