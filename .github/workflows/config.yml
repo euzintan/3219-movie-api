@@ -18,4 +18,5 @@ jobs:
           brew install awsebcli
       - name: Deploy to Elastic Beanstalk
         run: |
+          eb init
           eb deploy
