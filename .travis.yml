@@ -1,19 +1,22 @@
 language: node_js
 node_js:
-  - 12
+- 12
 script:
-  - npm install
-  - mocha --exit
+- npm install
+- mocha --exit
 deploy:
   provider: elasticbeanstalk
   access_key_id:
-    secure: "AKIAVWXQX7LQ6KT5IHFY"
+    secure: IHNULnmWhc4jtcEWRcCrrF2milVF461gUeYEOjpls/T+b4N6Q7JumMRLiTQtI/dKXgtcOZ3ho50Fjcz7hueN/NGd3fD5t7St4D1PkbcCe6icmUOYsg+A/2cFxyEnYIm28KWKN5ub8CD8LOfHuttgMD9zroJOlWduRKtroU2ZybO/JjeJ+Ks+V6JV+sdUQREXiuFTFSpFPOB/L6qxygGlOmuwWa0UUqVVstV3m/dBMXKdaH2mnU12j7ePIo5vJ60U9+dEzjvjDSf1kRC6LmC1jHsa8Lce2aV+VicJxa5CtpXzryrPy4diB9bLk3k4m2IAOWt3jRsqexltU21DFZd5j6qSY2/Sqky9zaxkA8hz7TUupEF5FrVmt2iTYx1Z3tB/vlFfSlmlGJUMqTF6VjBRKL5JoP3RMJHBYz7LKCfsj7qBJWl6NX7sUWQOaRUE6YRaoBaWPfqzU1is5Ku0w8dsr5vPhiVC+YaGLJvQF911UE5MtLcKN1FTHBYdbUEe6R+N6g4UewFZEgaq2PR390ktje11uW1tBVRH2TGCHDsKqIbl+6+RFVMnJBvLTcWhoFifccn63AFm5Fj2RP2tbuVmOwTVG/K7CaWXf7gtIYsMNwEwGE+GiIdjSvYLeE0VsBKOBywiWerEeFfZdaKdxcL0vzKog9E3ANYSo3GRBH2SPBQ=
+    # secure: AKIAVWXQX7LQ6KT5IHFY
   secret_access_key:
-    secure: "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"
+    # secure: PXpFd4KVJ48Z6LzGSU8xqMOeqNxBdRfd3nuVCP6f
+    secure: rf1sjiZ9l+kVuMqTjljQrVZZvWjpOGpQ8tOSotdHG1IX5RqR+UekArSLuLImJvGuA8KDzNZVfa0OYaJj1eQhspiHR08XcR+FE5B+SttEsAlhzPdhU65sRz7QwxLSN96vygQPdMQ7WBdvXbJsRIug74bWD6bUyWxLme343GOhCcT5sePNeQVGcKmAqvGQAuRQnBGWK4YKfzg0cifUUiXDgaxNC/PP1pEgFodWzojqyPU/ifKla3nR1wNaF/nLfORHYPW4mkuj147sqxekY+R8UpAClMdzFiDsWF6fLUVbXAC/ffWNNCYi8FNpr0wNwI4dkL5PfBpFuZw8gow77ZZMD+niMM0uFq9L/Ovtr16oaJJAaPe1Ts7WpSPF9OWZXf5Z+bm6Zo+d6QrN+y8fzbLVUwlR9jfmnqIu22YyAe1s8NyBsXtNl+G5vKw3QOQsQ3zydfA7pCSNwBxpBF4+GuhFEmaJmTvR+EALQDqL2l0hQtbMZNbb3Zxcu7EQXqg97k/aQHeJb5Gr/7u+s9/LQT3CSreK1N1nuucb9f9T8dph0+/os4dLnBDLaryRi/6rGCNNys57rc0A/isZHWE7T2ova2S33r0Z69oesP5GPrWCdbeQundF/9sVBN9KZgTULCeXUUxXxsGPAh7ys1jRd4Yl3PFO2ZMeHmo06J72xSmS5w0=
   on:
     repo: euzintan/3219-movie-api
-    branch: main # ← new!
-  region: "ap-southeast-1"
-  app: "cs3219-movie-api"
-  env: "cs3219-movie-api-dev"
+    branch: main
+  region: ap-southeast-1
+  app: cs3219-movie-api
+  env: cs3219-movie-api-dev
   bucket_name: 3219-movie-api
+  
