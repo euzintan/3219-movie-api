@@ -14,7 +14,7 @@ deploy:
     repo: euzintan/3219-movie-api
     branches:    # ← new!
       only:      # ← new!
-        - master # ← new!
+        - main # ← new!
   region: "ap-southeast-1"
   app: "cs3219-movie-api"
   env: "cs3219-movie-api-dev"
