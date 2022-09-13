@@ -4,3 +4,13 @@ node_js:
 script:
   - npm install
   - mocha --exit
+deploy:
+  provider: elasticbeanstalk
+  access_key_id:
+    secure: "Encrypted <access-key-id>=AKIAVWXQX7LQ6KT5IHFY"
+  secret_access_key:
+    secure: "Encypted <secret-access-key>=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"
+  region: "ap-southeast-1"
+  app: "cs3219-movie-api"
+  env: "cs3219-movie-api-dev"
+  bucket_name: "s3://cs3219-movie-api-bucket"
