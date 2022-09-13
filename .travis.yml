@@ -12,7 +12,7 @@ deploy:
     secure: "Encypted <secret-access-key>=PXpFd4KVJ48Z6LzGSU8xqMOeqNxBdRfd3nuVCP6f"
   on:
     repo: euzintan/3219-movie-api
-    branches:    # ← new!
+    branch:    # ← new!
       only:      # ← new!
         - main # ← new!
   region: "ap-southeast-1"
