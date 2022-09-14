@@ -10,8 +10,25 @@ const {
 } = require("./responsegenerator");
 
 const express = require("express");
+const cors = require("cors");
 const app = express();
+let allowCrossDomain = function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Content-Length, X-Requested-With"
+  );
+
+  if ("OPTIONS" == req.method) {
+    res.send(200);
+  } else {
+    next();
+  }
+};
+app.use(allowCrossDomain);
 app.use(express.json());
+app.use(cors());
 
 let idCounter = 4;
 
@@ -37,7 +54,7 @@ let movies = {
 };
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on ${PORT} 3000`);
+  console.log(`Server running on ${PORT}`);
 });
 
 app.all("/", (req, res, next) => {
