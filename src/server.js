@@ -2,6 +2,7 @@ const {
   validDescriptionChecker,
   validTitleChecker,
   validRatingChecker,
+  validActorChecker,
 } = require("./checkers");
 
 const {
@@ -69,7 +70,8 @@ app.post("/movies", (req, res, next) => {
   if (
     validTitleChecker(req.body, res) &&
     validRatingChecker(req.body, res) &&
-    validDescriptionChecker(req.body, res)
+    validDescriptionChecker(req.body, res) &&
+    validActorChecker(req.body, res)
   ) {
     movies[idCounter] = generateMovieObject(req.body);
     idCounter++;
@@ -92,7 +94,11 @@ app.put("/movies", (req, res, next) => {
       });
     }
   }
-  if (validRatingChecker(req.body) && validDescriptionChecker(req.body)) {
+  if (
+    validRatingChecker(req.body) &&
+    validDescriptionChecker(req.body) &&
+    validActorChecker
+  ) {
     movies[idCounter] = generateMovieObject(req.body);
     idCounter++;
     return res.json({
