@@ -10,9 +10,23 @@ const {
   generateModifiedMovieObject,
 } = require("./responsegenerator");
 
+const {
+  signupHandler,
+  loginUser,
+  checkForUserAuthorization,
+} = require("./auth");
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const mongoose = require("mongoose");
+const Movie = require("./movieModel");
+
+const Redis = require("redis");
+const redisClient = Redis.createClient({ host: "127.0.0.1", port: 6379 });
+
+require("dotenv").config();
+
 let allowCrossDomain = function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
@@ -30,6 +44,20 @@ let allowCrossDomain = function (req, res, next) {
 app.use(allowCrossDomain);
 app.use(express.json());
 app.use(cors());
+
+const DB = process.env.DATABASE.replace(
+  "<password>",
+  process.env.DATABASE_PASSWORD
+);
+
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connection successful"))
+  .then(() => redisClient.flushDb())
+  .then(() => console.log("Redis server has been flushed"));
 
 let idCounter = 4;
 
@@ -54,16 +82,35 @@ let movies = {
   },
 };
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
+
+redisClient.connect().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
+  });
 });
 
 app.all("/", (req, res, next) => {
   res.json({ status: 200, message: "Hello welcome to Movie World" });
 });
 
+const rolesAllowed = ["User", "Admin"];
+app.use("/movies", checkForUserAuthorization(rolesAllowed));
+
 app.get("/movies", (req, res, next) => {
   res.json({ status: 200, movies });
+});
+
+app.get("/bigMovieData", async (req, res, next) => {
+  const movies = await redisClient.get("movies");
+  if (movies != null) {
+    console.log("Data fetched from Redis cache");
+    return res.json(JSON.parse(movies));
+  } else {
+    console.log("Data fetched from MongoDB");
+    const movies = await Movie.find({});
+    redisClient.setEx("movies", 3600, JSON.stringify(movies));
+    return res.json({ status: 200, movies });
+  }
 });
 
 app.post("/movies", (req, res, next) => {
@@ -82,11 +129,11 @@ app.post("/movies", (req, res, next) => {
   }
 });
 
-app.put("/movies", (req, res, next) => {
-  if (!validTitleChecker(req.body)) return;
+app.put("/movies", function (req, res, next) {
+  if (!validTitleChecker(req.body, res)) return;
   for (movie in movies) {
     if (movies[movie].title === req.body.title) {
-      movies[movie] = generateModifiedMovieObject(req.body, movies[movie]);
+      movies[movie] = generateModifiedMovieObject(req.body, movies[movie], res);
       return res.json({
         status: 200,
         message: req.body.title + " has been modified",
@@ -95,9 +142,9 @@ app.put("/movies", (req, res, next) => {
     }
   }
   if (
-    validRatingChecker(req.body) &&
-    validDescriptionChecker(req.body) &&
-    validActorChecker
+    validRatingChecker(req.body, res) &&
+    validDescriptionChecker(req.body, res) &&
+    validActorChecker(req.body, res)
   ) {
     movies[idCounter] = generateMovieObject(req.body);
     idCounter++;
@@ -124,5 +171,8 @@ app.delete("/movies", (req, res, next) => {
     });
   }
 });
+app.post("/signup", signupHandler);
+
+app.get("/login", loginUser);
 
 module.exports = app;
