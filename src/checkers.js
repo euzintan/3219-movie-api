@@ -8,7 +8,7 @@ function validTitleChecker(reqBody, res) {
 
 function validRatingChecker(reqBody, res) {
   if (
-    !reqBody.rating ||
+    reqBody.rating == null ||
     typeof reqBody.rating != "number" ||
     reqBody.rating < 0 ||
     reqBody.rating > 5
